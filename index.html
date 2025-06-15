@@ -2,45 +2,212 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DQ STORE - Top Up Game & Pulsa</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #127F99;
+      --dark-bg: #0e0f11;
+      --card-bg: #1a1b1f;
+      --accent: #ffd700;
+      --text-light: #f2f2f2;
+      --radius: 14px;
+      --shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-light);
+    }
+
+    header {
+      background: #121317;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .search-bar {
+      flex: 1;
+      margin: 0 20px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+    }
+
+    nav {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: #1e1f23;
+      padding: 10px 0;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #bbb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: var(--accent);
+    }
+
+    .banner {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 0;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2 {
+      margin-top: 30px;
+      color: var(--accent);
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+
+    .product-card p {
+      margin: 8px 0 0;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #111;
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      padding: 20px;
+    }
+
+    .chat-cs {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #127F99;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 50px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>DQ STORE</h1>
-    <p>Top Up Game & Pulsa Terpercaya</p>
+    <div class="logo">DQ STORE</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Cari Game atau Voucher" />
+    </div>
+    <div>
+      <span style="font-size: 13px; color: #ccc;">🇮🇩 ID / IDR</span>
+    </div>
   </header>
 
-  <main>
-    <section class="form-container">
-      <form id="orderForm">
-        <label for="product">Pilih Produk:</label>
-        <select id="product" required>
-          <option value="">Loading...</option>
-        </select>
+  <nav>
+    <a href="#">Topup</a>
+    <a href="#">Cek Transaksi</a>
+    <a href="#">Leaderboard</a>
+    <a href="#">Kalkulator</a>
+    <a href="#">Masuk</a>
+    <a href="#">Daftar</a>
+  </nav>
 
-        <label for="userId">ID Game / No HP:</label>
-        <input type="text" id="userId" required placeholder="Contoh: 123456789" />
+  <div class="container">
+    <img src="https://via.placeholder.com/1000x200?text=Promo+Juni+DQ+STORE" class="banner" alt="Banner Promo">
 
-        <label for="metode">Metode Pembayaran:</label>
-        <select id="metode" required>
-          <option value="dana">DANA</option>
-          <option value="gopay">GoPay</option>
-          <option value="ovo">OVO</option>
-        </select>
-
-        <button type="submit">Kirim Pesanan</button>
-      </form>
-
-      <div class="result" id="result"></div>
-    </section>
-  </main>
+    <h2>🔥 Populer Sekarang!</h2>
+    <div class="products" id="productList">
+      <p>Memuat produk...</p>
+    </div>
+  </div>
 
   <footer>
-    <p>&copy; 2025 DQ STORE | Powered by BukaOlshop</p>
+    &copy; 2025 DQ STORE | Powered by BukaOlshop
   </footer>
 
-  <script src="script.js"></script>
+  <div class="chat-cs">💬 Chat CS</div>
+
+  <script>
+    const API_PRODUK = "https://bukaolshop.com/api/list_produk";
+    const productList = document.getElementById("productList");
+
+    async function loadProduk() {
+      try {
+        const res = await fetch(API_PRODUK);
+        const data = await res.json();
+
+        productList.innerHTML = "";
+        data.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+            <img src="https://via.placeholder.com/150x90?text=${encodeURIComponent(p.nama)}" alt="${p.nama}" />
+            <p>${p.nama}</p>
+            <p style="color: var(--accent); font-weight: 600;">Rp${p.harga}</p>
+          `;
+          productList.appendChild(card);
+        });
+      } catch (err) {
+        productList.innerHTML = "<p style='color:red;'>Gagal memuat produk. Coba lagi nanti.</p>";
+      }
+    }
+
+    loadProduk();
+  </script>
 </body>
 </html>
