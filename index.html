@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DQ STORE - Top Up Game & Pulsa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>DQ STORE</h1>
+    <p>Top Up Game & Pulsa Terpercaya</p>
+  </header>
+
+  <main>
+    <section class="form-container">
+      <form id="orderForm">
+        <label for="product">Pilih Produk:</label>
+        <select id="product" required>
+          <option value="">Loading...</option>
+        </select>
+
+        <label for="userId">ID Game / No HP:</label>
+        <input type="text" id="userId" required placeholder="Contoh: 123456789" />
+
+        <label for="metode">Metode Pembayaran:</label>
+        <select id="metode" required>
+          <option value="dana">DANA</option>
+          <option value="gopay">GoPay</option>
+          <option value="ovo">OVO</option>
+        </select>
+
+        <button type="submit">Kirim Pesanan</button>
+      </form>
+
+      <div class="result" id="result"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DQ STORE | Powered by BukaOlshop</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
