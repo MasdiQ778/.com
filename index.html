@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload & Order Produk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f8fb; margin: 0; padding: 0;}
+        .container { max-width: 420px; margin: 40px auto; background: #fff; padding: 28px 30px 32px 30px; border-radius: 10px; box-shadow: 0 0 16px #dde1e7;}
+        h2 { text-align: center; color: #007bff; margin-bottom: 18px;}
+        form label { display: block; margin-top: 18px;}
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%; padding: 9px; margin-top: 6px; border: 1px solid #bfc7cf; border-radius: 5px; font-size: 15px; background: #f8fafc;
+        }
+        textarea { resize: vertical; min-height: 50px;}
+        input[type="file"] { margin-top: 6px;}
+        button[type="submit"] { margin-top: 26px; width: 100%; background: #007bff; color: #fff; border: none; padding: 12px; border-radius: 5px; font-size: 17px; cursor: pointer; font-weight: bold;}
+        button[type="submit"]:hover { background: #0056b3;}
+        .msg { margin-top: 22px; text-align: center; color: green;}
+        .hidden { display: none;}
+        @media (max-width: 500px) { .container { max-width: 98vw; padding: 18px 5vw 20px 5vw; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Upload / Order Produk</h2>
+    <div class="msg" id="msg"></div>
+    <form method="post" enctype="multipart/form-data" action="index.php" id="uploadForm">
+        <label for="jenis_produk">Jenis Produk
+            <select name="jenis_produk" id="jenis_produk" required>
+                <option value="digiflazz">Digiflazz</option>
+                <option value="order_kuota">Order Kuota</option>
+            </select>
+        </label>
+        <!-- Untuk Digiflazz -->
+        <div id="digiflazz_fields">
+            <label for="nama_produk">Nama Produk
+                <input type="text" name="nama_produk" id="nama_produk">
+            </label>
+            <label for="harga">Harga
+                <input type="number" name="harga" id="harga">
+            </label>
+            <label for="kode_produk">Kode Produk
+                <input type="text" name="kode_produk" id="kode_produk">
+            </label>
+            <label for="keterangan">Keterangan
+                <textarea name="keterangan" id="keterangan" rows="3" placeholder="Opsional..."></textarea>
+            </label>
+            <label for="gambar">Gambar Produk
+                <input type="file" name="gambar" id="gambar" accept="image/*">
+            </label>
+        </div>
+        <!-- Untuk Order Kuota -->
+        <div id="order_kuota_fields" class="hidden">
+            <label for="nomor_tujuan">Nomor Tujuan
+                <input type="text" name="nomor_tujuan" id="nomor_tujuan" pattern="08[0-9]{8,13}">
+            </label>
+            <label for="provider">Provider
+                <select name="provider" id="provider">
+                    <option value="telkomsel">Telkomsel</option>
+                    <option value="indosat">Indosat</option>
+                    <option value="xl">XL</option>
+                    <option value="tri">Tri</option>
+                    <option value="smartfren">Smartfren</option>
+                    <option value="axis">Axis</option>
+                </select>
+            </label>
+            <label for="nominal">Nominal Kuota
+                <select name="nominal" id="nominal">
+                    <option value="1GB">1GB</option>
+                    <option value="2GB">2GB</option>
+                    <option value="5GB">5GB</option>
+                    <option value="10GB">10GB</option>
+                    <option value="unlimited">Unlimited</option>
+                </select>
+            </label>
+        </div>
+        <button type="submit">Kirim</button>
+    </form>
+</div>
+<script>
+document.getElementById('jenis_produk').addEventListener('change', function() {
+    var jenis = this.value;
+    document.getElementById('digiflazz_fields').classList.toggle('hidden', jenis !== 'digiflazz');
+    document.getElementById('order_kuota_fields').classList.toggle('hidden', jenis !== 'order_kuota');
+    // Required dinamis
+    document.getElementById('nama_produk').required = (jenis === 'digiflazz');
+    document.getElementById('harga').required = (jenis === 'digiflazz');
+    document.getElementById('kode_produk').required = (jenis === 'digiflazz');
+    document.getElementById('gambar').required = (jenis === 'digiflazz');
+    document.getElementById('nomor_tujuan').required = (jenis === 'order_kuota');
+    document.getElementById('provider').required = (jenis === 'order_kuota');
+    document.getElementById('nominal').required = (jenis === 'order_kuota');
+});
+// Validasi gambar
+document.getElementById('gambar').addEventListener('change', function(event){
+    const msg = document.getElementById('msg');
+    msg.innerHTML = '';
+    const file = event.target.files[0];
+    if (file && !file.type.startsWith('image/')) {
+        msg.textContent = 'File harus berupa gambar!';
+        event.target.value = '';
+    }
+});
+</script>
+</body>
+</html>
