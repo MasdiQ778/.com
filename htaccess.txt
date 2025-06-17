@@ -1,0 +1,5 @@
+# Allow file uploads to 'uploads' folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/uploads/
+</IfModule>
